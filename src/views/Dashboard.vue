@@ -10,6 +10,9 @@
         <button @click="showForm = !showForm" class="btn btn-success me-2">
           {{ showForm ? "Zatvori formu" : "Dodaj Note" }}
         </button>
+        <button @click="router.push('/korisnik')" class="btn btn-info me-2">
+    Profil korisnika
+  </button>
         <button @click="handleLogout" class="btn btn-danger">Logout</button>
       </div>
     </div>
