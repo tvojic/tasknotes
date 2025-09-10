@@ -1,21 +1,38 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
+import { auth } from "@/firebase"
+import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth"
 
 export const useAuthStore = defineStore("auth", () => {
-  const user = ref(JSON.parse(localStorage.getItem("user") || "null"))
-  const isLoggedIn = ref(!!user.value)
+  const user = ref(null)
+  const isLoggedIn = ref(false)
 
-  function login(userData) {
-    localStorage.setItem("user", JSON.stringify(userData))
-    user.value = userData
+  onAuthStateChanged(auth, (firebaseUser) => {
+    if (firebaseUser) {
+      user.value = { uid: firebaseUser.uid, email: firebaseUser.email }
+      isLoggedIn.value = true
+    } else {
+      user.value = null
+      isLoggedIn.value = false
+    }
+  })
+
+  async function login(userData) {
+  user.value = userData
+  isLoggedIn.value = true
+}
+
+  async function signup(email, password) {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    user.value = { uid: userCredential.user.uid, email: userCredential.user.email }
     isLoggedIn.value = true
   }
 
-  function logout() {
-    localStorage.removeItem("user")
+  async function logout() {
+    await signOut(auth)
     user.value = null
     isLoggedIn.value = false
   }
 
-  return { user, isLoggedIn, login, logout }
+  return { user, isLoggedIn, login, signup, logout }
 })

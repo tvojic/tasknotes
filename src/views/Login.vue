@@ -43,7 +43,7 @@
 <script setup>
 import { ref } from "vue"
 import { useRouter } from "vue-router"
-import { useAuthStore } from "@/stores/auth" // tvoj Pinia store
+import { useAuthStore } from "@/stores/auth"
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 import { app } from "@/firebase"
 
@@ -67,7 +67,6 @@ async function handleLogin() {
       name: userCredential.user.displayName || email.value.split("@")[0]
     }
 
-    // 🔑 Spremi u Pinia store (automatski i localStorage ako store to radi)
     authStore.login(firebaseUser)
 
     alert("Login successful!")
