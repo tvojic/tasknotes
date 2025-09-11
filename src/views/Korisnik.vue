@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-5">
+  <div class="user-container d-flex flex-column min-vh-100">
     <h1>Korisnički Profil</h1>
 
     <div v-if="auth.user" class="card p-4 mt-3">
@@ -32,5 +32,14 @@ function goBack() {
 .card {
   max-width: 500px;
   margin: 0 auto;
+  background-color:rgb(226, 226, 226);
+}
+.user-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* cijeli ekran */
+}
+.container.flex-grow-1 {
+  flex-grow: 1;
 }
 </style>

@@ -1,10 +1,12 @@
 
 <template>
-  <div id="app">
-    <nav>
-
-    </nav>
-    <router-view />
+  <div id="app" class="min-h-screen flex flex-col">
+    <div class="jumbotron">
+      <router-view />
+    </div>
+    <footer>
+      <p>© 2025 Toni Vojić</p>
+    </footer>
   </div>
 </template>
 
@@ -13,14 +15,13 @@ export default {
   name: "App",
   data() {
     return {
-      isLoggedIn: false, // stanje login-a
+      isLoggedIn: false,
     };
   },
   created() {
-    // provjera da li je user već logiran (npr. preko localStorage)
     this.isLoggedIn = !!localStorage.getItem("user");
 
-    // ako je logiran, preusmjeri ga na Home
+
     if (this.isLoggedIn && this.$route.path !== "/") {
       this.$router.push("/");
     }
@@ -44,16 +45,23 @@ export default {
   color: #2c3e50;
 }
 
-nav {
-  padding: 30px;
+footer {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background: lightblue;
+  color: black;
+  position:fixed;
+  bottom:0;
+  width:100%;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.jumbotron {
+  flex-grow: 1;
+  background-color: #c4dbf2;
+  color: black;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 </style>

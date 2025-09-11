@@ -88,13 +88,11 @@ async function handleSignup() {
       name: userCredential.user.displayName || email.value.split("@")[0]
     }
 
-    // Spremi u Pinia store
     authStore.login(firebaseUser)
 
     alert("Signup successful!")
-    router.push("/dashboard") // preusmjeri na dashboard
+    router.push("/dashboard")
 
-    // očisti formu (opcionalno)
     email.value = ""
     password.value = ""
     passwordAgain.value = ""

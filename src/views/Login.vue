@@ -70,7 +70,7 @@ async function handleLogin() {
     authStore.login(firebaseUser)
 
     alert("Login successful!")
-    router.push("/dashboard") // preusmjeri na dashboard
+    router.push("/dashboard")
   } catch (error) {
     console.error("Login error:", error.message)
     alert(error.message)

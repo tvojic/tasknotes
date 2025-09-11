@@ -1,51 +1,60 @@
 <template>
-  <div class="container mt-5">
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h1 v-if="auth.user">
-        Dobrodošao, {{ auth.user.email.split('@')[0] }}
-      </h1>
-      <h1 v-else>Loading...</h1>
-      <div>
-        <button @click="showForm = !showForm" class="btn btn-success me-2">
-          {{ showForm ? "Zatvori formu" : "Dodaj Note" }}
-        </button>
-        <button @click="router.push('/korisnik')" class="btn btn-info me-2">
-    Profil korisnika
-  </button>
-        <button @click="handleLogout" class="btn btn-danger">Logout</button>
+  <div class="dashboard-container d-flex flex-column min-vh-100">
+    <div class="container mt-5 flex-grow-1 d-flex flex-column">
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 v-if="auth.user">
+          Dobrodošao, {{ auth.user.email.split('@')[0] }}
+        </h1>
+        <h1 v-else>Loading...</h1>
+        <div class="button-group">
+          <button @click="showForm = !showForm" class="btn btn-success me-2">
+            {{ showForm ? "Zatvori formu" : "Dodaj Note" }}
+          </button>
+          <button @click="router.push('/korisnik')" class="btn btn-info me-2">
+            Profil korisnika
+          </button>
+          <button @click="handleLogout" class="btn btn-danger">Logout</button>
+        </div>
       </div>
-    </div>
 
-    <!-- Forma za dodavanje nove note -->
-    <div v-if="showForm" class="card p-3 mb-4">
-      <h4>Nova Note</h4>
-      <input v-model="form.name" placeholder="Ime note" class="form-control mb-2"/>
-      <textarea v-model="form.description" placeholder="Opis" class="form-control mb-2"></textarea>
-      <label>Boja:</label>
-      <select v-model="form.color" class="form-select mb-2">
-        <option value="lightblue">Plava</option>
-        <option value="lightgreen">Zelena</option>
-        <option value="lightyellow">Žuta</option>
-        <option value="lightpink">Roza</option>
-      </select>
-      <button @click="saveNote" class="btn btn-primary">Dodaj Note</button>
-    </div>
+      <!-- Forma za dodavanje nove note -->
+      <div v-if="showForm" class="card p-3 mb-4">
+        <h4>Nova Note</h4>
+        <input v-model="form.name" placeholder="Ime note" class="form-control mb-2"/>
+        <textarea v-model="form.description" placeholder="Opis" class="form-control mb-2"></textarea>
+        <label>Boja:</label>
+        <select v-model="form.color" class="form-select mb-2">
+          <option value="lightblue">Plava</option>
+          <option value="lightgreen">Zelena</option>
+          <option value="lightyellow">Žuta</option>
+          <option value="lightpink">Roza</option>
+        </select>
+        <button @click="saveNote" class="btn btn-primary">
+          {{ editingNote ? "Spremi Note" : "Dodaj Note" }}
+        </button>
+      </div>
 
-    <!-- Grid note-ova -->
-    <div class="row">
-      <div class="col-md-4 mb-3" v-for="note in notesStore.notes" :key="note.id">
-        <div class="card h-100 p-3" :style="{ backgroundColor: note.color }">
-          <h5>{{ note.name }}</h5>
-          <p>{{ note.description }}</p>
-          <small class="text-muted">Dodano: {{ note.date }}</small>
-          <div class="mt-2">
-            <button @click="editNote(note)" class="btn btn-sm btn-warning me-2">Uredi</button>
-            <button @click="deleteNote(note.id)" class="btn btn-sm btn-danger">Obriši</button>
+      <!-- Grid note-ova -->
+      <div class="row flex-grow-1">
+        <div class="col-md-4 mb-3" v-for="note in notesStore.notes" :key="note.id">
+          <div class="card h-100 p-3" :style="{ backgroundColor: note.color }">
+            <h5>{{ note.name }}</h5>
+            <p>{{ note.description }}</p>
+            <small class="text-muted">Dodano: {{ note.date }}</small>
+            <div class="mt-2">
+              <button @click="editNote(note)" class="btn btn-sm btn-warning me-2">Uredi</button>
+              <button @click="deleteNote(note.id)" class="btn btn-sm btn-danger">Obriši</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto">
+      © 2025 Toni Vojić
+    </footer>
   </div>
 </template>
 
@@ -63,7 +72,6 @@ const showForm = ref(false)
 const editingNote = ref(null)
 const form = ref({ name: "", description: "", color: "lightblue" })
 
-// Fetch notes kada se user inicijalizira
 onMounted(() => { if(auth.user) notesStore.fetchNotes() })
 watch(() => auth.user, (newUser) => { if(newUser) notesStore.fetchNotes() })
 
@@ -114,4 +122,31 @@ function cancelForm() {
 
 <style scoped>
 .card { min-height: 180px; }
+.button-group {
+  display: flex;
+  gap: 10px;
+}
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* cijeli ekran */
+}
+
+.container.flex-grow-1 {
+  flex-grow: 1; /* rasteže container između headera i footera */
+  display: flex;
+  flex-direction: column;
+}
+
+.row.flex-grow-1 {
+  flex-grow: 0; /* grid popunjava preostali prostor */
+}
+
+.footer {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background: lightblue;
+  color: black;
+}
 </style>
