@@ -19,17 +19,16 @@ const router = createRouter({
   routes
 })
 
-// ✅ Route guard
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
   const loggedIn = authStore.isLoggedIn
 
   if (to.path === "/dashboard" && !loggedIn) {
-    next("/login") // ako nije logiran, šalji na login
+    next("/login")
   } else if ((to.path === "/login" || to.path === "/signup") && loggedIn) {
-    next("/dashboard") // ako je već logiran, šalji na dashboard
+    next("/dashboard")
   } else {
-    next() // inače pusti
+    next()
   }
 })
 
