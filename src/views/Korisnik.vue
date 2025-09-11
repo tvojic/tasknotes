@@ -5,7 +5,7 @@
     <div v-if="auth.user" class="card p-4 mt-3">
       <p><strong>Email:</strong> {{ auth.user.email }}</p>
       <p><strong>UID:</strong> {{ auth.user.uid }}</p>
-      <p><strong>Korisničko ime:</strong> {{ auth.user.name || auth.user.email.split('@')[0] }}</p>
+      <p><strong>Korisničko ime:</strong> {{ auth.user.email.split('@')[0] }}</p>
 
       <button @click="goBack" class="btn btn-secondary mt-3">Nazad na Dashboard</button>
     </div>

@@ -64,7 +64,7 @@ async function handleLogin() {
     const firebaseUser = {
       uid: userCredential.user.uid,
       email: userCredential.user.email,
-      name: userCredential.user.displayName || email.value.split("@")[0]
+      name: email.value.split("@")[0]
     }
 
     authStore.login(firebaseUser)
